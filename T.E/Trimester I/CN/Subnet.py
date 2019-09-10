@@ -10,7 +10,7 @@ masks = {
 
 
 # converting the binary part of ip address to decimals seperated by bytes
-def convert(binary):
+def convertToDecimal(binary):
     decimal = []
     for i in range(0, len(binary), 8):
         decimal.append(str(int(binary[i:i + 8], 2)))
@@ -18,7 +18,9 @@ def convert(binary):
 
 
 ip = list(map(int, input('Enter ip : ').split('.')))
-taken_for_subnet = ''
+
+taken_for_subnet = ''  # Denotes the bytes of the IP address taken for subnet (cannot be configured)
+
 ip_class = ''
 
 # taken_for_subnet is basically what will bytes will stay same when you make subnets
@@ -37,28 +39,29 @@ else:
 
 print('\nThe class of ip address {} is {}\n'.format('.'.join(map(str, ip)), ip_class))
 
-ip_range = int(input("Enter number of hosts: ")) + 2  # +2 cuz first and last address not available
+ip_range = int(input("Enter number of hosts: ")) + 2  # +2 because first(network addr) and last(broadcast) addresses in a network are not available
 
 # To get the closest power of 2
-i = 1  
+pow2 = 1  
 while True:
-    result = 2 ** i
+    result = 2 ** pow2
     if ip_range <= result:
         break
-    i += 1
+    pow2 += 1
 
-mask = ('0' * i).rjust(masks[ip_class][1], '1')  # part of the subnet mask after the part included in masks
+# part of the subnet mask after the part included in masks
+mask = ('0' * pow2).rjust(masks[ip_class][1], '1')          # Adjusts the given string to the right and fill with extra '1's on the left
 
-n = 2 ** (masks[ip_class][1] - i)  # number of ip addresses in each subnet
+n = 2 ** (masks[ip_class][1] - pow2)  # number of ip addresses in each subnet
 
 subnets = []
 for k in range(n):
-    start = re.sub('1+', str(bin(k)[2:]), mask).rjust(masks[ip_class][1], '0')  # basically replace 111... with a no.
-    end = start[:-i] + '1' * i  # replace all the 0s of the subnet mask with 1s to get the last address
+    start = re.sub('1+', str(bin(k)[2:]), mask).rjust(masks[ip_class][1], '0')  # Replace all '1's with a binary no. 'k'
+    end = start[:-pow2] + '1' * pow2  # replace all the 0s of the subnet mask with 1s to get the last address
     subnets.append([start, end])
 
-print('\nThe subnet mask is', masks[ip_class][0] + convert(mask), '\n')
+print('\nThe subnet mask is', masks[ip_class][0] + convertToDecimal(mask), '\n')
 
 print('subnets :')
 for i in subnets:
-    print(taken_for_subnet + convert(i[0]), '-', taken_for_subnet + convert(i[1]))
+    print(taken_for_subnet + convertToDecimal(i[0]), '-', taken_for_subnet + convertToDecimal(i[1]))

@@ -12,9 +12,7 @@ class Node(object):
         self.number = n
         self.neighbours = []
         self.routingTable = []  #----- Destination, Cost, Next Hop
-
-abf = '''afefawfdsf'''
-
+        
 # Bellman Ford's Algorithm
 class Algorithm(object):
 
@@ -22,7 +20,6 @@ class Algorithm(object):
     def shareRT(vertexList):
 
         print("---------------------\n\nRouting Tables being transmitted 1 by 1:")
-        #UPDATE_HAPPENED = False
 
         while True:
             UPDATE_HAPPENED = False
@@ -31,10 +28,10 @@ class Algorithm(object):
                 for sender in receiver.neighbours:
                     current_cost = 0
                     next_hop = '#'
-                    for lol in receiver.routingTable:
-                        if lol[0] == sender.name:
-                            current_cost = lol[1]
-                            next_hop = lol[2]
+                    for xyz in receiver.routingTable:
+                        if xyz[0] == sender.name:
+                            current_cost = xyz[1]
+                            next_hop = xyz[2]
                     print(sender.name," sends its DV to ",receiver.name," , and is at distance ",current_cost," from it.")
 
                     for i in receiver.routingTable:
@@ -45,7 +42,7 @@ class Algorithm(object):
                                 print(L1, "\t", " and ",end='')
                                 print(L2, " ",end='')
                                 L1[1] = L2[1]+current_cost
-                                L1[2] = next_hop#changed from sender.name
+                                L1[2] = next_hop #changed from sender.name
                                 receiver.routingTable.remove((i[0],i[1],i[2]))
                                 i = tuple(L1)
                                 receiver.routingTable.append(i)
@@ -102,9 +99,9 @@ for i in range(m):
         if i.name == destLabel.name:
             destLabel = i
 
-    for lol in sourceLabel.routingTable:
-        if lol[0] == destLabel.name:
-            earlier_cost = lol[1]
+    for xyz in sourceLabel.routingTable:
+        if xyz[0] == destLabel.name:
+            earlier_cost = xyz[1]
 
     if destLabel not in sourceLabel.neighbours:
         sourceLabel.neighbours.append(destLabel)
@@ -144,9 +141,9 @@ while True:
             if i.name == destLabel.name:
                 destLabel = i
 
-        for lol in sourceLabel.routingTable:
-            if lol[0] == destLabel.name:
-                earlier_cost = lol[1]
+        for xyz in sourceLabel.routingTable:
+            if xyz[0] == destLabel.name:
+                earlier_cost = xyz[1]
 
         print("Earlier cost from ",sourceLabel.name," to ",destLabel.name," was ",earlier_cost)
         sourceLabel.routingTable.remove((destLabel.name, earlier_cost, destLabel.name))
