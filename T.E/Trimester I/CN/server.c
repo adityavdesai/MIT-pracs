@@ -1,56 +1,51 @@
-
-#include <sys/socket.h>
-#include <stdlib.h>
 #include <netinet/in.h>
-#include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <unistd.h>
 
-#define port 8080
+#define MAX 1024
 
 int main() {
-	struct sockaddr_in client_address;
+    int client_socket, accept_socket, length;
+    struct sockaddr_in server;
 
-	int server_sock;
-	if((server_sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-		printf("Socket Failed "); 
-        	exit(-1);
-	}
+    if ((client_socket = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+        printf("Socket creation failed!\n");
+        exit(1);
+    }
+    printf("Socket successfully created!\n");
 
-	client_address.sin_family = AF_INET;
-	client_address.sin_port = htons(port); 
-	client_address.sin_addr.s_addr = INADDR_ANY;
-	
-	if (bind(server_sock, (struct sockaddr *)&client_address, sizeof(client_address)) < 0) 
-    	{ 
-       		printf("Bind Failed "); 
-      	 	exit(-1); 
-    	} 
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = htons(8000);
 
+    if ((bind(client_socket, (struct sockaddr*)&server, sizeof(server))) < 0) {
+        printf("Socket bind failed!\n");
+        exit(1);
+    }
+    printf("Socket successfully bound!\n");
 
-	if (listen(server_sock, 1) < 0) 
-	{ 
-		printf("Listen failed "); 
-		exit(-1); 
-	}
+    if (listen(client_socket, 1) != 0) {
+        printf("Listen failed!\n");
+        exit(1);
+    }
+    length = sizeof(server);
+    if ((accept_socket = accept(client_socket, (struct sockaddr*)&server,
+                                (socklen_t*)&length)) < 0) {
+        printf("Connection not accepted!\n");
+        exit(1);
+    }
 
-	
-	int accept_socket;
-	int addrlen = sizeof(client_address);
-	if ((accept_socket = accept(server_sock, (struct sockaddr *)&client_address, (socklen_t*)&addrlen)) < 0) 
-    	{ 
-		printf("Accept failed "); 
-		exit(-1); 
-    	}
-
-	char buffer[1024] = {0};
-	int valread = read( accept_socket , buffer, 1024);
-	printf("%s", buffer);
-
-	char* message = "\n Message Received !!\n";
-	send(accept_socket , message , strlen(message) , 0 ); 
-    	printf("\n Acknowledgement message sent!\n");
-
-	return 0;
+    char* message;
+    char buffer[MAX] = {0};
+    int value = read(accept_socket, buffer, MAX);
+    printf("Received: %s\n", buffer);
+    printf("Enter a message!\n");
+    printf("message: ");
+    fgets(message, MAX, stdin);
+    send(accept_socket, message, strlen(message), 0);
+    close(client_socket);
 }
-
