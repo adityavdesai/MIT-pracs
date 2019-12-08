@@ -1,0 +1,48 @@
+
+form {
+    margin: auto;
+    margin-top: 15%;
+    width: 50%;
+    text-align: center ;
+    background: red;
+    border-radius: 25%;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+input[type=submit] {
+    width: auto;
+    padding-right: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.btn:hover {
+    background-color: yellow;
+    text-decoration-color: black;
+}
+
+form label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+body h1{
+    border: chartreue;
+
+}
+
+body {
+    background: blueviolet;
+}
+
+form .btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+ }
+
