@@ -1,0 +1,64 @@
+
+
+LIBRARY  DATABASE
+
+1) use - To create a database and enter it
+	
+	syntax: use db_name
+
+	input:	> use library
+	output: switched to db library
+
+
+2) createCollection() - To create a new collection in the database
+
+	syntax: db.createCollection("collection_name")
+
+	input: db.createCollection("Books")
+	output: { "ok" : 1 }
+
+
+3) insert() - Insert a single record into a particular collection
+	
+	syntax: db.collection_name.insert({record})
+
+	input: > db.Books.insert({
+			... "Title": "The Alchemist",
+			... "Author": "Paulo Coelho",
+			... "Publisher": "Paperback",
+			... "Genre": ["Fiction", "Classics", "Fantasy", "Philosophy"],
+			... "Price": "$10.47"
+			... })
+	output: WriteResult({ "nInserted" : 1 })
+
+
+4) insertMany - Insert multiple records in any specific collection
+
+	syntax: db.collection_name.insertmany([ {record1}, {record2}, .... ])
+
+	input: > db.Books.insertMany(
+			[
+				{
+					"Title": "The Kite Runner",
+					"Author": "Khaled Hosseini",
+					"Publisher": "Riverhead Books",
+					"Genre": ["Fiction", "Historical", "Contemporary"],
+					"Price": "$13.99"
+				},
+				{
+					"Title": "Life od Pi",
+					"Author": "Yann Martel",
+					"Publisher": "Seal Books",
+					"Genre": ["Fiction", "Fantasy", "Classics", "Adventure"],
+					"Price": "$9.99"
+				}
+			])
+	output: {
+				"acknowledged" : true,
+				"insertedIds" : [
+							ObjectId("5e58a02ebde665e985295375"),
+							ObjectId("5e58a02ebde665e985295376")
+				]
+			}
+
+ 
