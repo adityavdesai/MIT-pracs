@@ -27,6 +27,10 @@ print(
 _, all_messages = imap.select("inbox")
 _, first_mail = imap.fetch(all_messages[0].decode("utf-8"), "rfc822")
 
+# Printing total number of messages in inbox
+_, msgnums = imap.search(None, 'ALL')
+print(f'Total number of mesages in INBOX : {len(msgnums[0].split())}\n\n\n')
+
 # iterate over response and print headers
 headers = []
 parser = HeaderParser()
