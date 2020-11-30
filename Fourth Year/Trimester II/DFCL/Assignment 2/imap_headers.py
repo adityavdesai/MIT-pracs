@@ -19,22 +19,25 @@ _, folders = imap.list()
 # Printing the list of folders
 print(
     "List of folders in inbox:\n",
-    "\n".join(folder.decode().split(' "/" ')[1].replace('\"', '') for folder in folders),
+    "\n".join(folder.decode().split(' "/" ')[1].replace('"', "") for folder in folders),
     end="\n\n\n",
 )
 
-# Getting the meassage and header of first mail
-_, all_messages = imap.select("inbox")
-_, first_mail = imap.fetch(all_messages[0].decode("utf-8"), "rfc822")
+# Selecting INBOX and getting all messages
+imap.select("inbox")
+_, all_messages = imap.search(None, "ALL")
 
 # Printing total number of messages in inbox
-_, msgnums = imap.search(None, 'ALL')
-print(f'Total number of mesages in INBOX : {len(msgnums[0].split())}\n\n\n')
+print(f"Total number of mesages in INBOX : {len(all_messages[0].split())}\n\n\n")
 
-# iterate over response and print headers
+# Get 'n'th mail and print headers
+_, nth_mail = data = imap.fetch(
+    all_messages[0].split()[int(input("Enter n for print headers of 'n'th mail: "))],
+    "(RFC822)",
+)
 headers = []
 parser = HeaderParser()
-for response in first_mail:
+for response in nth_mail:
     if isinstance(response, tuple):
         headers.extend(
             parser.parsestr(message_from_bytes(response[1]).as_string()).items()
