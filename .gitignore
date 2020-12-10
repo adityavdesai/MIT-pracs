@@ -1,2 +1,8 @@
-.idea/
-__pychache__/
+# IDE configs
+.idea
+
+# Python cache
+__pychache__
+
+# Private key
+*.pem
