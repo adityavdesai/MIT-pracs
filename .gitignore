@@ -6,3 +6,6 @@ __pychache__
 
 # Private key
 *.pem
+
+# Logs
+wireshark_logs.csv
