@@ -1,5 +1,4 @@
 from random import choice
-from hashlib import sha512
 from socket import socket
 
 if __name__ == "__main__":
@@ -21,10 +20,10 @@ if __name__ == "__main__":
             print(f"\nReceived connection from {addr}")
             data = client.recv(4096).decode().strip()
 
-            # Randomly alter the data by adding a space
+            # Randomly alter the data by adding a period
             if choice((True, False)):
                 print("Modifying the data")
-                data += "XD"
+                data += "."
 
             # Return message to client
             print("Sending the data")
