@@ -4,7 +4,8 @@
 # Python cache
 __pychache__
 
-# Private key
+# Private files
+.env
 *.pem
 
 # Logs
