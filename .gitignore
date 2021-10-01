@@ -1,2 +1,12 @@
-.idea/
-__pychache__/
+# IDE configs
+.idea
+
+# Python cache
+__pychache__
+
+# Private files
+.env
+*.pem
+
+# Logs
+wireshark_logs.csv
